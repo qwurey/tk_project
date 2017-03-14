@@ -16,13 +16,14 @@ public class ARSTSimulator {
     // code related
     boolean usedARST = true; // use ARST or not
     int taskNumbers = 5; // task numbers
+    int threshold = taskNumbers * 50; // 50, 100, 150, 200, 250, 300
     int cluster_size = 10000;
 
-    int[] n = {10, 100, 1000, 10000};
-    Node[] cluster1 = new Node[10];
-    Node[] cluster2 = new Node[100];
-    Node[] cluster3 = new Node[1000];
-    Node[] cluster4 = new Node[10000];
+//    int[] n = {10, 100, 1000, 10000};
+//    Node[] cluster1 = new Node[10];
+//    Node[] cluster2 = new Node[100];
+//    Node[] cluster3 = new Node[1000];
+    Node[] cluster4 = new Node[cluster_size];
     List<Node> c4 = new ArrayList<Node>();
     List<Task> tasks = new ArrayList<Task>();
     int p = 5; // process1 methods number
@@ -131,7 +132,7 @@ public class ARSTSimulator {
                 }
                 candidateNodes.add(cluster4[j]);
                 if(usedARST == true) {
-                    if(candidateNodes.size() == taskNumbers * 100) {
+                    if(candidateNodes.size() == threshold) {
                         break;
                     }
                 }
