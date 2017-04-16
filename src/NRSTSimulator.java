@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Created by urey on 2017/3/12.
  */
-public class ARSTSimulator {
+public class NRSTSimulator {
 
     // template
     static boolean LOCAL = System.getSecurityManager() == null;
@@ -316,7 +316,7 @@ public class ARSTSimulator {
             }
         }
 
-        ARSTSimulator demo = new ARSTSimulator();
+        NRSTSimulator demo = new NRSTSimulator();
         demo.run();
     }
 }

@@ -12,6 +12,6 @@ Part 2. DLMAP method.
 
 Deep Learning Mix Allocation Priority:
 
-Part 3. ARST method.
+Part 3. NRST method.
 
-Adaptive Random Sampling Strategy:
+Node Random Sampling Strategy:
