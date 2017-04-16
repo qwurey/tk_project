@@ -15,3 +15,8 @@ Deep Learning Mix Allocation Priority:
 Part 3. NRST method.
 
 Node Random Sampling Strategy:
+
+
+Tips:
+1. Some distributed tensorflow application's example codes are in this address: https://github.com/qwurey/distributed_tensorflow_demo
+
