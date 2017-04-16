@@ -14,7 +14,7 @@ public class ARSTSimulator {
     Scanner sc = new Scanner(System.in);
 
     // code related
-    boolean usedARST = true; // use ARST or not
+    boolean usedARST = false; // use ARST or not
     int taskNumbers = 5; // task numbers
     int threshold = taskNumbers * 50; // 50, 100, 150, 200, 250, 300
     int cluster_size = 10000;

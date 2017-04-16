@@ -1,0 +1,11 @@
+# delete job
+kubectl delete job tf-wk-1-2-0-{{job-id}}
+kubectl delete job tf-wk-1-2-1-{{job-id}}
+kubectl delete job tf-ps-1-2-0-{{job-id}}
+
+
+# delete svc
+kubectl delete svc tensorflow-ps-service
+kubectl delete svc tensorflow-wk-service0
+kubectl delete svc tensorflow-wk-service1
+

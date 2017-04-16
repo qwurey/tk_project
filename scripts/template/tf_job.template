@@ -1,0 +1,126 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tf-wk-1-2-0-{{job-id}}
+spec:
+  template:
+    metadata:
+      labels:
+        name: tensorflow-worker0
+        role: worker
+    spec:
+      containers:
+      - name: worker
+        image: tensorflow/tensorflow
+        ports:
+        - containerPort: 2224
+        command: ["/bin/sh", "-c"]
+        args: ["
+curl https://codeload.github.com/qwurey/distributed_tensorflow_demo/zip/master > qw.zip;
+unzip qw.zip;
+cd distributed_tensorflow_demo-master;
+ls ./;
+python test_python.py;
+python calc_w_b.py --ps_hosts=tensorflow-ps-service.default.svc.cluster.local:2222 --worker_hosts=tensorflow-wk-service0.default.svc.cluster.local:2224,tensorflow-wk-service1.default.svc.cluster.local:2225 --job_name=worker --task_index=0 1>worker_log 2>worker_errlog;
+               "]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tf-wk-1-2-1-{{job-id}}
+spec:
+  template:
+    metadata:
+      labels:
+        name: tensorflow-worker1
+        role: worker
+    spec:
+      containers:
+      - name: worker
+        image: tensorflow/tensorflow
+        ports:
+        - containerPort: 2225
+        command: ["/bin/sh", "-c"]
+        args: ["
+curl https://codeload.github.com/qwurey/distributed_tensorflow_demo/zip/master > qw.zip;
+unzip qw.zip;
+cd distributed_tensorflow_demo-master;
+ls ./;
+python test_python.py;
+python calc_w_b.py --ps_hosts=tensorflow-ps-service.default.svc.cluster.local:2222 --worker_hosts=tensorflow-wk-service0.default.svc.cluster.local:2224,tensorflow-wk-service1.default.svc.cluster.local:2225 --job_name=worker --task_index=1 1>worker_log 2>worker_errlog;
+               "]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tf-ps-1-2-0-{{job-id}}
+spec:
+  template:
+    metadata:
+      labels:
+        name: tensorflow-ps
+        role: ps
+    spec:
+      containers:
+      - name: ps
+        image: tensorflow/tensorflow
+        ports:
+        - containerPort: 2222
+        command: ["/bin/sh", "-c"]
+        args: ["
+curl https://codeload.github.com/qwurey/distributed_tensorflow_demo/zip/master > qw.zip;
+unzip qw.zip;
+cd distributed_tensorflow_demo-master;
+ls ./;
+python test_python.py;
+python calc_w_b.py --ps_hosts=tensorflow-ps-service.default.svc.cluster.local:2222 --worker_hosts=tensorflow-wk-service0.default.svc.cluster.local:2224,tensorflow-wk-service1.default.svc.cluster.local:2225 --job_name=ps --task_index=0 1>ps_log 2>ps_errlog;
+             "]
+      restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: tensorflow-worker0
+    role: worker
+  name: tensorflow-wk-service0
+spec:
+  ports:
+    - port: 2224
+      targetPort: 2224
+  selector:
+    name: tensorflow-worker0
+    role: worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: tensorflow-worker1
+    role: worker
+  name: tensorflow-wk-service1
+spec:
+  ports:
+    - port: 2225
+      targetPort: 2225
+  selector:
+    name: tensorflow-worker1
+    role: worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: tensorflow-ps
+    role: ps
+  name: tensorflow-ps-service
+spec:
+  ports:
+    - port: 2222
+      targetPort: 2222
+  selector:
+    name: tensorflow-ps
+    role: ps
+
